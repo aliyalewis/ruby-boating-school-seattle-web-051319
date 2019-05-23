@@ -1,40 +1,35 @@
 class Student
-attr_reader :first_name
-attr_accessor :boating_test
-@@all = []
+  attr_accessor :student_name, :boating_test
+  @@all = []
 
-def initialize(first_name)
-  @first_name = first_name
-  @@all << self
-end
-
-def self.all
-  @@all
-end
-
-def add_boating_test(test_name, status, instructor)
-  BoatingTest.new(self, test_name, status, instructor)
-end
-
-def self.find_student(first_name)
-  self.all.find do |student|
-    student.first_name.downcase == first_name.downcase
+  def initialize(student_name)
+    @student_name = student_name
+    @@all << self
   end
-end
 
-def grade_percentage
-#returns the percentage of tests that a student has passed as a Float.
-  all_tests = BoatingTest.all.select do |test|
-    test.student = self
+  def self.all
+    @@all
   end
-  # I'm trying to pull out all the passing tests by iterating through all_tests
-  # and setting them to the variable passed_test.
-  passed_test = all_tests.select do |test|
-    test.test_status == "passed"
-    # binding.pry
-  # (passed_test/all_tests.length).to_f * 100
-  end
-end
 
+  def add_boating_test(test_name, test_status, instructor)
+    BoatingTest.new(self, test_name, test_status, instructor)
+  end
+
+  def self.find_student
+    self.all.find do |student|
+      student.name = self.name
+    end
+  end
+
+  def grade_percentage
+    passed_tests = BoatingTest.all.collect do |test|
+      test.student == self
+      test.test_status == test_status = "passed"
+    end
+    all_tests = BoatingTest.all.collect do |test|
+      test.student == self
+    end
+      (passed_tests/all_tests) * 100
+  end
 
 end
