@@ -1,5 +1,7 @@
+require 'pry'
+
 class Instructor
-attr_accessor :name
+attr_reader :name
 @@all = []
 
   def initialize(name)
@@ -11,22 +13,26 @@ attr_accessor :name
     @@all
   end
 
-  def pass_student(student_name, test_name)
-    if BoatingTest.all.find do |test|
-      test.name == test_name && test.student == student_name
-      test.test_status = "passed"
+  def pass_student(student, test_name)
+    single_test = BoatingTest.all.find do |test|
+      test.student == student && test.test_name == test_name
     end
-    else BoatingTest.new(student_name, test_name, "passed", instructor)
-    end
-  end
-
-  def fail_student(student_name, test_name)
-    if BoatingTest.all.find do |test|
-      test.name == test_name && test.student == student_name
-      test.test_status = "failed"
-    end
-    else BoatingTest.new(tudent_name, test_name, "failed", instructor)
+      if single_test
+        single_test.status = "Passed"
+      else
+        BoatingTest.new(student, test_name, "Passed", self)
     end
   end
 
-end
+  def fail_student(student, test_name)
+    single_test = BoatingTest.all.find do |test|
+      test.student == student && test.test_name == test_name
+    end
+      if single_test
+        single_test.status = "Failed"
+      else
+        BoatingTest.new(student, test_name, "Failed", self)
+    end
+  end
+
+  end
